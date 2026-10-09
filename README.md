@@ -1,4 +1,4 @@
-# Options Pricer 📈
+# Options Pricer
 
 Monte Carlo pricer for European and Asian options under geometric Brownian motion, with antithetic-variate and control-variate variance reduction. Validated against the closed-form Black–Scholes solution.
 
@@ -62,16 +62,16 @@ See `convergence.png` for 95% CI bands of plain vs. reduced-variance estimates a
 
 ## Notes on the variance-reduction results
 
-- **Control variates are the big win here.** Because `e^{-rT} S_T` is a martingale with known mean `S_0` and is highly correlated with the call payoff, regressing it out soaks up most of the Monte Carlo noise — SE drops by ~62%.
-- **Antithetic variates barely help** on an at-the-money European call. The payoff `max(S_T − K, 0)` is approximately linear in `Z` near the strike, so pairing `Z` with `−Z` doesn't cancel much. Antithetic would help more for deep in-the-money options or for payoffs with stronger symmetry in the underlying shock.
+- Control variates do most of the work. `e^{-rT} S_T` is a martingale with known mean `S_0` and moves closely with the call payoff, so regressing it out removes most of the noise. SE drops by about 62%.
+- Antithetic variates barely help on an at-the-money European call. The payoff `max(S_T − K, 0)` is approximately linear in `Z` near the strike, so pairing `Z` with `−Z` doesn't cancel much. Antithetic would help more for deep in-the-money options or for payoffs with stronger symmetry in the underlying shock.
 - Asian antithetic SE is essentially unchanged for the same reason (the arithmetic average is a near-linear functional of the path when `σ` is modest).
 
 ## Limitations
 
-- Constant volatility — no stochastic vol (Heston, SABR) and no local vol.
-- European and Asian only — no early exercise (no American / Bermudan via Longstaff–Schwartz).
+- Constant volatility. No stochastic vol (Heston, SABR) and no local vol.
+- European and Asian only, so no early exercise (American or Bermudan via Longstaff–Schwartz).
 - No dividends or funding costs.
-- `demo.py` fixes the RNG seed for reproducibility; a real study would run many seeds and report mean & variance of the estimator.
+- `demo.py` fixes the RNG seed so the output is reproducible. A proper study would run many seeds and report the mean and variance of the estimator.
 
 ## Next
 
